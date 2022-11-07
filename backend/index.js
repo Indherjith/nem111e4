@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 8080;
 const { connection } = require("./config/db");
 const { UserModel } = require("./models/UserModel");
 const {authentication} = require("./middlewares/authentication");
-const { blogController } = require("./Routes/Blog.route");
+const { todoController } = require("./Routes/Todo.route");
 
 const app = express();
 app.use(express.json());
@@ -47,7 +47,7 @@ app.post("/login",async (req,res)=>{
     })
 })
 
-app.use("/blogs",authentication,blogController)
+app.use("/todos",authentication,todoController)
 
 
 app.listen(PORT,async ()=>{

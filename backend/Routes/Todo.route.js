@@ -1,27 +1,27 @@
 const {Router} = require("express");
 let jwt = require('jsonwebtoken');
-const {BlogModel} = require("../models/BlogModel")
+const {TodoModel} = require("../models/TodoModel")
 
-const blogController = Router();
+const todoController = Router();
 
-blogController.get("/",async(req,res)=>{
-    res.send( await BlogModel.find())
+todoController.get("/",async(req,res)=>{
+    res.send( await TodoModel.find())
 })
 
-blogController.post("/create", async (req,res)=>{
+todoController.post("/create", async (req,res)=>{
     const payload = req.body;
     console.log(payload)
-    const new_blog = new BlogModel(payload)
-    await new_blog.save();
+    const new_todo = new TodoModel(payload)
+    await new_todo.save();
     try{
-        res.send("blog Creation Success")
+        res.send("Todo Creation Success")
     }
     catch(e){
         res.send(e)
     }
 })
 
-blogController.delete("/delete/:_id", async (req,res)=>{
+todoController.delete("/delete/:_id", async (req,res)=>{
     const token = req.headers?.authorization
     jwt.verify(token,'secret',async function(err,decoded){
         if(err){
@@ -29,11 +29,11 @@ blogController.delete("/delete/:_id", async (req,res)=>{
         }
         else{
             const result = req.params;
-            const data = await BlogModel.findOne(req.params);
+            const data = await TodoModel.findOne(req.params);
             if(data.email===req.body.email){
-                await BlogModel.deleteOne(result)
+                await TodoModel.deleteOne(result)
                 try{
-                    res.send("Item Deleted Successfully");
+                    res.send("Todo Deleted Successfully");
                 }
                 catch(e){
                     res.send(e);
@@ -49,14 +49,14 @@ blogController.delete("/delete/:_id", async (req,res)=>{
 })
 
 
-blogController.patch("/update/:_id", async (req,res)=>{
+todoController.patch("/update/:_id", async (req,res)=>{
     const result = req.params;
-    const data = await BlogModel.findOne(req.params);
+    const data = await TodoModel.findOne(req.params);
     if(data.email===req.body.email){
         try{
             const newFeeds = {data,...req.body};
             console.log(newFeeds);
-            const updates = await BlogModel.findByIdAndUpdate(req.params, req.body, {new :true})
+            const updates = await TodoModel.findByIdAndUpdate(req.params, req.body, {new :true})
             res.send(updates)
         }
         catch(err){
@@ -70,4 +70,4 @@ blogController.patch("/update/:_id", async (req,res)=>{
 
 
 
-module.exports = {blogController}
+module.exports = {todoController}
