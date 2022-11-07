@@ -5,7 +5,8 @@ const {TodoModel} = require("../models/TodoModel")
 const todoController = Router();
 
 todoController.get("/",async(req,res)=>{
-    res.send( await TodoModel.find())
+    const {status,tag} =req.query
+    res.send( await TodoModel.find(req.query))
 })
 
 todoController.post("/create", async (req,res)=>{

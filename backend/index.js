@@ -39,7 +39,7 @@ app.post("/login",async (req,res)=>{
         if(result){
             var token = jwt.sign({email:email},'secret');
             console.log(token);
-            res.send({"user":req.body.email,"token":token})
+            res.send({"user":req.body.email,"msg":"login successfull","token":token})
         }
         else{
             res.send("Login failed, invalid credentials")
