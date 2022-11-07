@@ -1,6 +1,6 @@
 const {Router} = require("express");
 let jwt = require('jsonwebtoken');
-const {BlogModel} = require("../models/Blog.model")
+const {BlogModel} = require("../models/BlogModel")
 
 const blogController = Router();
 
