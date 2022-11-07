@@ -22,7 +22,7 @@ blogController.post("/create", async (req,res)=>{
 })
 
 blogController.delete("/delete/:_id", async (req,res)=>{
-    const token = req.headers?.authorization?.split(" ")[1]
+    const token = req.headers?.authorization
     jwt.verify(token,'secret',async function(err,decoded){
         if(err){
             res.send("please login")
@@ -50,30 +50,22 @@ blogController.delete("/delete/:_id", async (req,res)=>{
 
 
 blogController.patch("/update/:_id", async (req,res)=>{
-    const token = req.headers?.authorization?.split(" ")[1]
-    jwt.verify(token,'secret',async function(err,decoded){
-        if(err){
-            res.send("please login")
+    const result = req.params;
+    const data = await BlogModel.findOne(req.params);
+    if(data.email===req.body.email){
+        try{
+            const newFeeds = {data,...req.body};
+            console.log(newFeeds);
+            const updates = await BlogModel.findByIdAndUpdate(req.params, req.body, {new :true})
+            res.send(updates)
         }
-        else{
-            const result = req.params;
-            const data = await BlogModel.findOne(req.params);
-            if(data.email===req.body.email){
-                try{
-                    const updates = await BlogModel.findByIdAndUpdate(req.params, req.body, {new :true})
-                    res.send(updates)
-                }
-                catch(err){
-                    console.log(err)
-                }
-            }
-            else{
-                res.send("This feed is not don by you")
-            }
+        catch(err){
+            console.log(err)
         }
-    })
-    
-    
+    }
+    else{
+        res.send("This feed is not don by you")
+    }
 })
 
 
