@@ -23,10 +23,10 @@ app.post("/signup",async (req,res)=>{
     bcrypt.hash(password,6).then(async function(hash){
         const user = new UserModel({email,password:hash})
         await user.save()
-        res.send("Sign up Successfull")
+        res.send({"msg":"Sign up Successfull"})
     })
     .catch(()=>{
-        res.send("something went wrong")
+        res.send({"msg":"something went wrong"})
     })
 })
 
