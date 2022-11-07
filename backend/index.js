@@ -19,10 +19,9 @@ app.get("/",(req,res)=>{
 })
 
 app.post("/signup",async (req,res)=>{
-    let {email,password,number}=req.body;
-    // console.log(email,password,age)
+    let {email,password}=req.body;
     bcrypt.hash(password,6).then(async function(hash){
-        const user = new UserModel({email,password:hash,number})
+        const user = new UserModel({email,password:hash})
         await user.save()
         res.send("Sign up Successfull")
     })
